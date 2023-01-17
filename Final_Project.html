@@ -1,0 +1,195 @@
+<html>
+    <head>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <title>Final Project</title>
+        <style>
+            h1 {text-align: left;}
+            p {text-align: left;}
+        </style>
+    </head>
+    <body>
+
+        <h1>Data Visualization - Final Project</h1> 
+        <p>Cecil McKenna</p>
+        <p>Fifa World Cup Stats</p>
+
+        <svg id="main" width="800" height="800">
+
+            <text id="label" x="335" y="20" style='font-size: 25px'>
+                Expected Goals By Country
+            </text>
+            <text x='12' y='120' style='font-size: 35px' writing-mode = 'vertical-rl'> Expected Goals</text>
+            <text x='400' y='600' style='font-size: 35px'>Country</text>
+            <text x='78' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Netherlands</text>
+            <text x='103' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Senegal</text>
+            <text x='127' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Ecuador</text>
+            <text x='150' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Qatar</text>
+            <text x='173' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>England</text>
+            <text x='195' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>United States</text>
+            <text x='218' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Iran</text>
+            <text x='239' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Wales</text>
+            <text x='264' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Argentina</text>
+            <text x='287' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Poland</text>
+            <text x='310' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Mexico</text>
+            <text x='333' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Saudi Arabia</text>
+            <text x='357' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>France</text>
+            <text x='379' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Australia</text>
+            <text x='402' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Tuniaia</text>
+            <text x='425' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Denmark</text>
+            <text x='448' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Japan</text>
+            <text x='471' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Spain</text>
+            <text x='494' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Germany</text>
+            <text x='517' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Costa Rica</text>
+            <text x='541' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Morocco</text>
+            <text x='563' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Croatia</text>
+            <text x='586' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Belgium</text>
+            <text x='610' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Canada</text>
+            <text x='633' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Brazil</text>
+            <text x='656' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Switzerland</text>
+            <text x='679' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Cameroon</text>
+            <text x='702' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Serbia</text>
+            <text x='725' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Portugal</text>
+            <text x='747' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Korea Republic</text>
+            <text x='770' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Uruguay</text>
+            <text x='794' y='460' style='font-size: 20px' writing-mode = 'vertical-rl'>Ghana</text>
+            <g transform="translate(70, 40)"> </g>
+        </svg>
+        
+        <script>
+            var BAR_WIDTH = 15;
+            var MAX_BAR_HEIGHT = 400;
+
+            var country = [];
+            var expectedGoals = [];
+            var actualGoals = [];
+
+            function drawExpected()
+            {
+                var maxValue = d3.max(expectedGoals);
+                console.log(maxValue);
+
+                var selection = d3.select('svg')
+                    .select('g')
+                    .selectAll('rect')
+                    .data(expectedGoals);
+
+                selection.enter()
+                    .append('rect')
+                    .attr('height', function(d)
+                    {
+                        var barLength = (d/maxValue) * MAX_BAR_HEIGHT;
+                        return barLength;
+                    })
+                    .attr('width', 20)
+                    .attr('x', function(d, i)
+                    {
+                        return i * 23;
+                    })
+                    .attr('y', function(d)
+                    {
+                        var bar = 1 - (d/maxValue)
+                        return bar * MAX_BAR_HEIGHT;
+                    })
+                    .attr("fill", function(d) {
+                        return "rgb(0, 0, " + Math.round(d * 50) + ")";
+                    })
+                    .on("mouseover", function() {
+                        d3.select(this)
+                            .attr("fill", "red");
+                    })
+                    .on("mouseout", function(d) {
+                        d3.select(this)
+                            .attr("fill", "rgb(0, 0, " + (d * 50) + ")");
+                    })
+                    .append("title")
+                    .text(function(d) {
+                        return "This value is " + d;
+                    });
+
+            }
+
+            /*function drawActual()
+            {
+                var maxValue = d3.max(actualGoals);
+                console.log(maxValue);
+
+                var selection = d3.select('svg')
+                    .select('g')
+                    .selectAll('rect')
+                    .data(actualGoals);
+
+                selection.enter()
+                    .append('rect')
+                    .attr('height', function(d)
+                    {
+                        var barLength = (d/maxValue) * MAX_BAR_HEIGHT;
+                        return barLength;
+                    })
+                    .attr('width', 20)
+                    .attr('x', function(d, i)
+                    {
+                        return i * 23;
+                    })
+                    .attr('y', function(d)
+                    {
+                        var bar = 1 - (d/maxValue)
+                        return bar * MAX_BAR_HEIGHT;
+                    })
+                    .attr('fill', 'green')
+            }*/
+
+
+            d3.csv('group_stats.csv',  function(data)
+            {
+                var actual = data[5];
+                var expected = data[9];
+                var teams = data[0];
+
+                for(var i = 1; i < 33; i++)
+                {
+                    var actGoals = actual[i];
+                    var expGoals = expected[i];
+                    var team = teams[i];
+
+                    expectedGoals.push(+expGoals);
+                    actualGoals.push(+actGoals);
+                    country.push(+team);
+                }
+
+                //drawActual();
+                drawExpected();
+                console.log(data);
+
+                var yScale = d3.scale.linear()
+                            .domain([d3.min(data), d3.max(data)])
+                            .range([0, 399]);
+            
+                var yAxis = d3.svg.axis()
+                            .scale(yScale)
+                            .orient("left")
+                            .ticks(5);
+            
+                d3.select('svg g')
+                    .call(yAxis);
+
+                /*var xScale = d3.scale.linear()
+                        .domain([d3.min(data), d3.max(data)])
+                        .range([0, 727]);
+            
+                var xAxis = d3.svg.axis()
+                            .scale(xScale)
+                            .orient('bottom');
+            
+                d3.select('svg g')
+                    .call(xAxis);*/
+
+            });
+
+            d3.select('h1').style('color', 'red');
+            d3.selectAll('p').style('font-size', '30px');
+
+            
+
+        </script>
+    </body>
+</html>
